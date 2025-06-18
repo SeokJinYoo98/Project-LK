@@ -1,7 +1,9 @@
 using UnityEngine;
-using Mvp;
+using GameSystem.MVP;
+
 public class PlayerModel : MonoBehaviour, IModel
 {
+    public float MoveSpeed { get; private set; } = 1f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
