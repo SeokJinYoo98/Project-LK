@@ -1,4 +1,4 @@
-namespace GameSystem.MVP
+namespace GameSystem.MVPC
 {
     public interface IPresenter
     {

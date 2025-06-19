@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace GameSystem.MVP
+namespace GameSystem.MVPC
 {
     public interface IView
     {
         void MoveTo(Vector2 velocity);
-        void LookAt(Vector2 mouseScreenPos);
+        void SetFlipX(bool flip);
     }
 }

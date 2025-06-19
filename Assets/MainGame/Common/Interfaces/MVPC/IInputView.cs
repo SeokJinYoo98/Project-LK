@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace GameSystem.MVP
+namespace GameSystem.MVPC
 {
     public interface IInputView
     {

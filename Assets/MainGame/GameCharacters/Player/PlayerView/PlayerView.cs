@@ -1,4 +1,4 @@
-using GameSystem.MVP;
+using GameSystem.MVPC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -12,8 +12,6 @@ public class PlayerView : MonoBehaviour, IView
 {
     private SpriteRenderer  _sr;
     private Animator        _animator;
-
-    private Vector2         _velocity = Vector2.zero;
     private Rigidbody2D     _rb;
     private void Awake()
     {
@@ -33,19 +31,18 @@ public class PlayerView : MonoBehaviour, IView
     }
     void FixedUpdate()
     {
-        _rb.linearVelocity = _velocity;
     }
     public void MoveTo(Vector2 velocity)
     {
-        _velocity = velocity;
+        _rb.linearVelocity = velocity;
         _animator.SetFloat( "MoveSpeed", velocity.magnitude );
-    }
-    public void LookAt(Vector2 mousePos)
-    {
-        bool isFlip = (transform.position.x < mousePos.x) ? false : true;
-        if (_sr.flipX == isFlip) return;
 
-        _sr.flipX = isFlip;
-        _animator.SetBool( "FlipX", isFlip );
+    }
+    public void SetFlipX(bool flipX)
+    {
+        if (_sr.flipX == flipX) return;
+
+        _sr.flipX = flipX;
+        _animator.SetBool( "FlipX", flipX );
     }
 }  

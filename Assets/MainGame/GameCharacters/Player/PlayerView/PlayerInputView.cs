@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using GameSystem.MVP;
+using GameSystem.MVPC;
 
 [RequireComponent (typeof(PlayerInput))]
 public class PlayerInputView : MonoBehaviour, IInputView
 {
     private PlayerInput _input;
-    public Vector2 MoveDir { get; private set; }    = Vector2.zero;
+    public Vector2 MoveDir  { get; private set; }   = Vector2.zero;
     public Vector2 MousePos { get; private set; }   = Vector2.zero;
     void Awake()
     {
