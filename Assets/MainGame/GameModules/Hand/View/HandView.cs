@@ -3,25 +3,33 @@ using UnityEngine;
 using GameSystem.MVPC;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public class HandView : MonoBehaviour
 {
-    private SpriteRenderer _sr;
-
+    private SpriteRenderer  _sr;
+    private Animator        _anim;
+    [SerializeField] private Vector3 _animOffset = Vector3.zero;
     private Vector3 _defaultPos;
     private Vector3 _swapPos;
-    
+
     private void Awake()
     {
-        _sr = GetComponent<SpriteRenderer>();
+        _sr         = GetComponent<SpriteRenderer>();
+        _anim       = GetComponent<Animator>();
         _defaultPos = transform.position;
+    }
+    private void Update()
+    {
+        Vector3 pos = _animOffset;
+        if (_sr.flipX) pos += _swapPos;
+        else pos += _defaultPos;
+
+        transform.localPosition = pos;
     }
     public void FlipX(bool flipX)
     {
         if (_sr.flipX == flipX) return;
-
         _sr.flipX = flipX;
-        if (flipX) transform.localPosition = _swapPos;
-        else transform.localPosition = _defaultPos;
     }
     public void LookAt(Vector2 dir)
     {
@@ -34,5 +42,10 @@ public class HandView : MonoBehaviour
     {
         _swapPos = swapPos;
         _swapPos.x -= 0.1f;
+    }
+
+    public void SetAnim(string name, bool activate)
+    {
+        _anim.SetBool( "Move", activate );
     }
 }

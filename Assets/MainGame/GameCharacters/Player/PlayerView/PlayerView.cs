@@ -34,15 +34,14 @@ public class PlayerView : MonoBehaviour, IView
     }
     public void MoveTo(Vector2 velocity)
     {
+        float mag = velocity.magnitude;
+        _animator.SetFloat( "MoveSpeed", mag );
         _rb.linearVelocity = velocity;
-        _animator.SetFloat( "MoveSpeed", velocity.magnitude );
-
     }
     public void SetFlipX(bool flipX)
     {
         if (_sr.flipX == flipX) return;
 
         _sr.flipX = flipX;
-        _animator.SetBool( "FlipX", flipX );
     }
 }  

@@ -36,5 +36,12 @@ public class HandController : MonoBehaviour, IEquippable
         Vector2 direction = targetPos - (Vector2)transform.position;
         _handView.LookAt( direction );
     }
+    public void TempFunc(Vector2 velocity)
+    {
+        if (velocity.magnitude < 0.01f)
+            _handView.SetAnim( "Move", false );
+        else
+            _handView.SetAnim( "Move", true );
+    }
     public void SetSwapPos(Vector3 pos) => _handView.SetSwapPos( pos );
 }

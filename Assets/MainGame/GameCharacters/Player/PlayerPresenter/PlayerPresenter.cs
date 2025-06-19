@@ -38,6 +38,7 @@ public class PlayerPresenter : MonoBehaviour, IPresenter
 
         Vector2 velocity = Velocity( );
         _view.MoveTo( velocity );
+        _handSystem.TempFunc(velocity);
     }
     bool ShouldFlip(Vector2 targetPos) => transform.position.x > targetPos.x;
     Vector2 Velocity() => _inputView.MoveDir * _model.MoveSpeed;
