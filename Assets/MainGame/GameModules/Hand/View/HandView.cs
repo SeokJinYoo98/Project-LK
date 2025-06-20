@@ -46,6 +46,6 @@ public class HandView : MonoBehaviour
 
     public void SetAnim(string name, bool activate)
     {
-        _anim.SetBool( "Move", activate );
+        _anim.SetBool( name, activate );
     }
 }

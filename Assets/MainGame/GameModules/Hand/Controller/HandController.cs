@@ -38,10 +38,10 @@ public class HandController : MonoBehaviour, IEquippable
     }
     public void TempFunc(Vector2 velocity)
     {
-        if (velocity.magnitude < 0.01f)
-            _handView.SetAnim( "Move", false );
+        if (velocity.sqrMagnitude < 0.01f)
+            _handView.SetAnim( "Walk", false );
         else
-            _handView.SetAnim( "Move", true );
+            _handView.SetAnim( "Walk", true );
     }
     public void SetSwapPos(Vector3 pos) => _handView.SetSwapPos( pos );
 }

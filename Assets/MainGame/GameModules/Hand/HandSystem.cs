@@ -6,9 +6,13 @@ public class HandSystem : MonoBehaviour
     [SerializeField] private HandController _rightHand;
 
     private List<HandController> _hands;
-    private void Start()
+    private void Awake()
     {
         _hands = new List<HandController> { _leftHand, _rightHand };
+
+    }
+    private void Start()
+    {
         _leftHand.SetSwapPos( _rightHand.transform.position );
         _rightHand.SetSwapPos( _leftHand.transform.position );
     }
