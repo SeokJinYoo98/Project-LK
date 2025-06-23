@@ -1,6 +1,6 @@
 using UnityEngine;
 
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]

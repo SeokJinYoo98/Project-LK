@@ -1,6 +1,6 @@
 
 using UnityEngine;
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -8,8 +8,7 @@ public class StateMachine<T> where T : IPresenter
 {
 
     private State<T>                      _mainState = null;
-    private Dictionary<string, State<T>>  _subStates = new( );
-
+    private readonly Dictionary<string, State<T>>  _subStates = new( );
     public void ChangeMainState(State<T> newState)
     {
         if (_mainState?.GetType( ) == newState.GetType( ))
@@ -26,9 +25,7 @@ public class StateMachine<T> where T : IPresenter
             return;
         if (_subStates.TryGetValue( state.Name, out var target ))
         {
-            // 레벨업 에이블 변환 가능?
-            // 가능 -> 레벨업 호출
-            // 불가능 -> 타이머 초기화
+            Debug.Log( target.Name + "is exist" );
         }
         else
         {

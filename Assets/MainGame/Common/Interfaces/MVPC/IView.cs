@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameSystem.MVPC
+namespace Common.Interface.MVPC
 {
     public interface IView
     {

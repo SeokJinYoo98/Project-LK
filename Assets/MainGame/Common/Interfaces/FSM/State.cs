@@ -1,4 +1,4 @@
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 using Unity.VisualScripting;
 
 public abstract class State<TPresenter> where TPresenter : IPresenter

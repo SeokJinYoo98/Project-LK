@@ -1,4 +1,4 @@
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -42,8 +42,6 @@ namespace Player
         }
         public void SetFlipX(bool flipX)
         {
-            if (_sr.flipX == flipX) return;
-
             _sr.flipX = flipX;
         }
         public void SetAnimBool(string name,  bool value)

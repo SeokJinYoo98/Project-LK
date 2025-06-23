@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Common.Interfaces.Equipment
+namespace Common.Interface.Equipment
 {
     public interface IEquipment
     {

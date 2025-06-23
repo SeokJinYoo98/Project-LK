@@ -1,5 +1,5 @@
 using UnityEngine;
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 
 namespace Player
 {
@@ -7,6 +7,7 @@ namespace Player
     {
         public float MoveSpeed { get; private set; } = 1f;
         public float Hp { get; private set; } = 0;
+        public bool CanMove = true;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

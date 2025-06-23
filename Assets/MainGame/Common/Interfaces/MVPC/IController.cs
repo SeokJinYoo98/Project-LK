@@ -1,5 +1,5 @@
 
-namespace GameSystem.MVPC
+namespace Common.Interface.MVPC
 {
     public interface IController
     {

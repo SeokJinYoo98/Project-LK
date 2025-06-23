@@ -1,37 +1,35 @@
 using UnityEngine;
-using GameSystem.MVPC;
+using Common.Interface.MVPC;
 using Player.States;
+using Common.Interface.Handler;
+using HandSystem;
 
 namespace Player {
-    [RequireComponent( typeof( PlayerInputView ) )]
+    [RequireComponent( typeof( PlayerInputHandler ) )]
     [RequireComponent( typeof( PlayerModel ) )]
     [RequireComponent( typeof( PlayerView ) )]
-    [RequireComponent( typeof( HandSystem ) )]
+    [RequireComponent( typeof( HandManager ) )]
     public class PlayerPresenter : MonoBehaviour, IPresenter
     {
-        private IInputView   _inputView;
-        private IView        _view;
-        private IModel       _model;
-        private Camera       _camera;
-        private HandSystem   _handSystem;
+        private IInputHandler    _input;
+        private IView            _view;
+        private PlayerModel      _model;
+        private Camera           _camera;
+        private HandManager      _handManager;
         private StateMachine<PlayerPresenter> _fsm;
-        private string _currAnim;
 
-        private Vector2 _cachedMouseWorldPos;
-        private Vector2 _cachedVelocity;
-        private Vector2 _cachedPlayerPosition;
-        private bool    _cachedShouldFlip;
-        public Vector2 MouseWorldPos => _cachedMouseWorldPos;
-        public Vector2 PlayerPos     => _cachedPlayerPosition;
-        public Vector2 Velocity      => _cachedVelocity;
-
+        public Vector2  MouseWorldPos { get; private set; }
+        public Vector2  PlayerPos { get; private set; }
+        public Vector2  Velocity { get; private set; }
+        public bool     ShouldFlip { get; private set; }
+        public bool     CanMove { get; private set; }
 
         void Awake()
         {
-            _inputView  = GetComponent<PlayerInputView>( );
-            _view       = GetComponent<PlayerView>( );
-            _model      = GetComponent<PlayerModel>( );
-            _handSystem = GetComponent<HandSystem>( );
+            _input       = GetComponent<PlayerInputHandler>( );
+            _view        = GetComponent<PlayerView>( );
+            _model       = GetComponent<PlayerModel>( );
+            _handManager = GetComponent<HandManager>( );
             
             _camera = Camera.main;
         }
@@ -39,10 +37,17 @@ namespace Player {
         void Start()
         { 
             _fsm = new( );
-            _fsm.ChangeMainState( new IdleState( this ) );
-            //_fsm.AddSubState( new FlipState( this ) );
-        }
+            _fsm.ChangeMainState( new PlayerIdleState( this ) );
+            _fsm.AddSubState(new InputSubState( this ) );
 
+            _input.OnRightClick += RightClicked;
+            _input.OnLeftClick  += LeftClicked;
+        }
+        private void OnDestroy()
+        {
+            _input.OnRightClick -= RightClicked;
+            _input.OnLeftClick  -= LeftClicked;
+        }
         // Update is called once per frame
         void Update()
         {
@@ -51,34 +56,39 @@ namespace Player {
         }
         private void UpdateCacheData()
         {
-            
-            _cachedPlayerPosition   = transform.position;
-            
-            _cachedMouseWorldPos    = _camera.ScreenToWorldPoint( _inputView.MousePos );
-            _handSystem.LookAt( _cachedMouseWorldPos );
+            PlayerPos = transform.position;
 
-            Vector2 moveDir = _inputView.MoveDir;
-            _cachedVelocity = (moveDir.sqrMagnitude < 0.0001f) ? Vector2.zero : moveDir * _model.MoveSpeed;
+            MouseWorldPos = _camera.ScreenToWorldPoint( _input.MousePos );
+            
+            Velocity = (_input.MoveDirMag < 0.01f) ? Vector2.zero 
+                : _input.MoveDir * _model.MoveSpeed;
 
-            bool shouldFlip = _cachedMouseWorldPos.x < _cachedPlayerPosition.x;
-            if (_cachedShouldFlip != shouldFlip)
-            {
-                _cachedShouldFlip = shouldFlip;
-                SetFlipX( _cachedShouldFlip );
-            }
-                
+            ShouldFlip = MouseWorldPos.x < PlayerPos.x;
         }
-        private void SetFlipX( bool flip )
+
+        public void RequestFlip( bool flip )
         {
             _view.SetFlipX( flip );
-            _handSystem.SetFlipX( flip );
+            _handManager.SetFlipX( flip );
         }
-        public void ChangeMainState(State<PlayerPresenter> newState) 
+        public void RequestLookAt(Vector2 pos )
+            => _handManager.LookAt( pos );
+        public void ChangeMainState(State<PlayerPresenter> newState)
             => _fsm.ChangeMainState( newState );
+        public void ChangeHandState(HandType type, HandStateType stateType)
+            => _handManager.ChangeHandState( type, stateType );
         public void SetVelocity(Vector2 velocity)
+            => _view.SetVelocity( velocity );
+
+        private void LeftClicked()
         {
-            _view.SetVelocity( velocity );
-            _handSystem.TempFunc(velocity);
+            Debug.Log( "Left Clicked" );
+            ChangeMainState(new PlayerAttackState(this, HandType.Left));
+        }
+        private void RightClicked()
+        {
+            Debug.Log( "Right Clicked" );
+            ChangeMainState(new PlayerAttackState(this, HandType.Right));   
         }
     }
 }
