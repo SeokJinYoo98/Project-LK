@@ -1,8 +1,10 @@
-using UnityEngine;
-using Common.Interface.MVPC;
-using Player.States;
 using Common.Interface.Handler;
+using Common.Interface.MVPC;
 using HandSystem;
+using Player.States;
+using System;
+using UnityEngine;
+using UnityEngine.XR;
 
 namespace Player {
     [RequireComponent( typeof( PlayerInputHandler ) )]
@@ -38,7 +40,8 @@ namespace Player {
         { 
             _fsm = new( );
             _fsm.ChangeMainState( new PlayerIdleState( this ) );
-            _fsm.AddSubState(new InputSubState( this ) );
+            _fsm.AddSubState(new FlipSubState( this ) );
+            _fsm.AddSubState( new AimSubState( this ) );
 
             _input.OnRightClick += RightClicked;
             _input.OnLeftClick  += LeftClicked;
@@ -73,8 +76,8 @@ namespace Player {
         }
         public void RequestLookAt(Vector2 pos )
             => _handManager.LookAt( pos );
-        public void ChangeMainState(State<PlayerPresenter> newState)
-            => _fsm.ChangeMainState( newState );
+        public void ChangeMainState(PlayerStateType type)
+            => _fsm.ChangeMainState( CreateState( type ) );
         public void ChangeHandState(HandType type, HandStateType stateType)
             => _handManager.ChangeHandState( type, stateType );
         public void SetVelocity(Vector2 velocity)
@@ -83,12 +86,23 @@ namespace Player {
         private void LeftClicked()
         {
             Debug.Log( "Left Clicked" );
-            ChangeMainState(new PlayerAttackState(this, HandType.Left));
+            ChangeMainState( PlayerStateType.Attack);
+            ChangeHandState( HandType.Left, HandStateType.Attack );
         }
         private void RightClicked()
         {
             Debug.Log( "Right Clicked" );
-            ChangeMainState(new PlayerAttackState(this, HandType.Right));   
+            ChangeMainState( PlayerStateType.Attack );
+            ChangeHandState( HandType.Right, HandStateType.Attack );
         }
+
+        State<PlayerPresenter> CreateState(PlayerStateType type)
+            => type switch
+            {
+                PlayerStateType.Idle    => new PlayerIdleState( this ),
+                PlayerStateType.Walk    => new PlayerWalkState( this ),
+                PlayerStateType.Attack  => new PlayerAttackState( this ),
+                _ => throw new ArgumentOutOfRangeException( nameof( type ), type, null )
+            };
     }
 }

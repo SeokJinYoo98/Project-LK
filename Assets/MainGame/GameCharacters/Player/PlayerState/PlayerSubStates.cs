@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace Player.States
 {
-    public class InputSubState : State<PlayerPresenter>
+    public class FlipSubState : State<PlayerPresenter>
     {
         bool _currFlip;
-        public InputSubState(PlayerPresenter owner) 
+        public FlipSubState(PlayerPresenter owner) 
             : base( owner ) { }
         public override void Enter()
         {
@@ -16,7 +16,6 @@ namespace Player.States
         public override void Execute(float deltaTime)
         {
             FlipCheck( );
-            MouseCheck( );
         }
 
         public override void Exit()
@@ -31,9 +30,22 @@ namespace Player.States
             _currFlip = _owner.ShouldFlip;
             _owner.RequestFlip( _currFlip );
         }
-        private void MouseCheck()
+    }
+    public class AimSubState : State<PlayerPresenter>
+    {
+        public AimSubState(PlayerPresenter owner) : base( owner ) { }
+        public override void Enter()
+        {
+        }
+
+        public override void Execute(float deltaTime)
         {
             _owner.RequestLookAt( _owner.MouseWorldPos );
+        }
+
+        public override void Exit()
+        {
+
         }
     }
 

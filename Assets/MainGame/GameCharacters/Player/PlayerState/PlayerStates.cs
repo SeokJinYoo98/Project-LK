@@ -4,6 +4,13 @@ using Common.Interface.MVPC;
 
 namespace Player.States
 {
+    public enum PlayerStateType
+    {
+        Idle,
+        Walk,
+        Attack,
+        Death
+    }
     public class PlayerIdleState : State<PlayerPresenter>
     {
         public PlayerIdleState(PlayerPresenter owner) : base(owner) { }
@@ -17,7 +24,7 @@ namespace Player.States
         {
             if (_owner.Velocity.sqrMagnitude > 0.01f)
             {
-                _owner.ChangeMainState( new PlayerWalkState( _owner ) );
+                _owner.ChangeMainState( PlayerStateType.Walk );
                 _owner.ChangeHandState( HandType.Both, HandStateType.Walk );
             }
                 
@@ -45,7 +52,7 @@ namespace Player.States
         {
             if (_owner.Velocity.sqrMagnitude < 0.01f)
             {
-                _owner.ChangeMainState( new PlayerIdleState( _owner ) );
+                _owner.ChangeMainState( PlayerStateType.Idle );
                 _owner.ChangeHandState( HandType.Both, HandStateType.Idle );
             }
                 
@@ -63,23 +70,19 @@ namespace Player.States
     }
     public class PlayerAttackState : State<PlayerPresenter>
     {
-        readonly HandType   _handType;
         float               _attackTime = 1.0f;
-        bool                _canMove = false;
-        public PlayerAttackState(PlayerPresenter owner, HandType handType) : base( owner )
-        {
-            _handType = handType;
-        }
+
+        public PlayerAttackState(PlayerPresenter owner) : base( owner ) { }
         public override void Enter()
         {
-            _canMove = _owner.CanMove;
+
         }
         public override void Execute(float deltaTime)
         {
             _attackTime -= deltaTime;
             if (_attackTime <= 0.0f)
             {
-               _owner.ChangeMainState(new PlayerIdleState(_owner) );
+               _owner.ChangeMainState( PlayerStateType.Idle );
                _owner.ChangeHandState( HandType.Both, HandStateType.Idle );
             }
               

@@ -40,24 +40,16 @@ namespace HandSystem
             if (type == HandType.Both)
             {
                 foreach (var hand in _handMap.Values)
-                    hand.ChangeMainState( NewState( hand, stateType ) );
+                    hand.ChangeMainState( stateType );
             }
             else if (_handMap.TryGetValue( type, out var hand ))
             {
-                hand.ChangeMainState( NewState( hand, stateType ) );
+                hand.ChangeMainState( stateType );
             }
             else
             {
                 Debug.LogWarning( $"HandManager: Unknown hand type: {type}" );
             }
         }
-        private State<HandPresenter> NewState(HandPresenter hand, HandStateType type)
-        => type switch
-         {
-             HandStateType.Idle     => new HandIdleState( hand ),
-             HandStateType.Walk     => new HandWalkState( hand ),
-             HandStateType.Attack   => new HandAttackState( hand ),
-             _ => throw new ArgumentOutOfRangeException( nameof( type ), type, null )
-         };
     }
 }

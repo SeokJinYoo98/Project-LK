@@ -1,7 +1,8 @@
-using System;
 using Common.Interface.Equipment;
 using Common.Interface.MVPC;
+using System;
 using UnityEngine;
+using UnityEngine.XR;
 namespace HandSystem
 {
     public enum HandType { Left, Right, Both }
@@ -43,7 +44,16 @@ namespace HandSystem
             => _handView.SetAnim( name, anim );
         public void SetSwapPos(Vector3 pos) 
             => _handView.SetSwapPos( pos );
-        public void ChangeMainState(State<HandPresenter> newState)
-            => _fsm.ChangeMainState( newState );
+        public void ChangeMainState(HandStateType type)
+            => _fsm.ChangeMainState(CreateState(type));
+
+        private State<HandPresenter> CreateState(HandStateType type)
+          => type switch
+          {
+              HandStateType.Idle => new HandIdleState( this ),
+              HandStateType.Walk => new HandWalkState( this ),
+              HandStateType.Attack => new HandAttackState( this ),
+              _ => throw new ArgumentOutOfRangeException( nameof( type ), type, null )
+          };
     }
 }
