@@ -1,4 +1,4 @@
-using Common.Interface.MVPC;
+ï»¿using Common.Interface.MVPC;
 using HandSystem;
 using System;
 using UnityEngine;
@@ -29,7 +29,7 @@ namespace Player.States
                 _owner.ChangeHandState( HandType.Both, HandStateType.Walk );
             }
                 
-            // ½ºÅ×¹Ì³Ê È¸º¹ µî Ãß°¡
+            // ìŠ¤í…Œë¯¸ë„ˆ íšŒë³µ ë“± ì¶”ê°€
         }
 
         public override void Exit()
@@ -59,7 +59,7 @@ namespace Player.States
                 
 
             _owner.SetVelocity( _owner.Velocity );
-            // ÃßÈÄ °¡¼Óµµ Ãß°¡
+            // ì¶”í›„ ê°€ì†ë„ ì¶”ê°€
             _velocity = _owner.Velocity;
         }
 
@@ -95,9 +95,9 @@ namespace Player.States
         {
             var other = type == HandType.Left ? HandType.Right : HandType.Left;
 
-            // [¾îÅÃ ¹Ì±¸Çö ÀÓ½Ã Idle ¼öÇà]
-            _owner.ChangeHandState( type, HandStateType.Wait );
-            _owner.ChangeHandState( other, HandStateType.Wait );
+            // [ì–´íƒ ë¯¸êµ¬í˜„ ì„ì‹œ Idle ìˆ˜í–‰]
+            _owner.ChangeHandState(HandType.Both, HandStateType.Wait );
+
             //_owner.ChangeHandState( type,  HandStateType.Attack );
             //_owner.ChangeHandState( other, HandStateType.Wait );
 
