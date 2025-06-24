@@ -4,7 +4,7 @@ namespace Common.Interface.Equipment
 {
     public interface IEquipment
     {
-
+        
     }
     public interface IEquippable
     {

@@ -7,8 +7,9 @@ using System.Xml.Linq;
 public class StateMachine<T> where T : IPresenter
 {
 
-    private State<T>                      _mainState = null;
+    private State<T> _mainState = null;
     private readonly Dictionary<string, State<T>>  _subStates = new( );
+    public State<T> MainState { get { return _mainState; } }
     public void ChangeMainState(State<T> newState)
     {
         if (_mainState?.GetType( ) == newState.GetType( ))

@@ -3,23 +3,30 @@ using UnityEngine;
 
 namespace HandSystem
 {
-    public enum HandStateType { Idle, Walk, Attack };
+    public enum HandStateType { Idle, Walk, Attack, Wait };
+    public class HandWaitState : State<HandPresenter>
+    {
+        public HandWaitState(HandPresenter owner) : base( owner ) { }
+        public override void Enter()
+        {
+            _owner.SetAnim("HandState", HandStateType.Wait);
+        }
+    }
     public class HandIdleState : State<HandPresenter>
     {
         public HandIdleState(HandPresenter owner) : base( owner ) { }
         public override void Enter()
         {
-            _owner.SetAnim( "Idle", true );
+            _owner.SetAnim( "HandState", HandStateType.Idle );
         }
 
         public override void Execute(float deltaTime)
         {
-
+           
         }
 
         public override void Exit()
         {
-            _owner.SetAnim( "Idle", false );
         }
     }
     public class HandWalkState : State<HandPresenter>
@@ -27,8 +34,7 @@ namespace HandSystem
         public HandWalkState(HandPresenter owner) : base( owner ) { }
         public override void Enter()
         {
-            _owner.SetAnim( "Walk", true );
-
+            _owner.SetAnim( "HandState", HandStateType.Walk );
         }
 
         public override void Execute(float deltaTime)
@@ -38,7 +44,7 @@ namespace HandSystem
 
         public override void Exit()
         {
-            _owner.SetAnim( "Walk", false );
+
         }
     }
     public class HandAttackState : State<HandPresenter>
@@ -46,7 +52,7 @@ namespace HandSystem
         public HandAttackState(HandPresenter owner) : base( owner ) { }
         public override void Enter()
         {
-            Debug.Log( "Idle Enter" );
+            _owner.SetAnim( "HandState", HandStateType.Attack );
 
         }
 

@@ -1,7 +1,13 @@
 using UnityEngine;
-
+using WeaponSystem;
 
 using Common.Interface.MVPC;
-public class HandModel : MonoBehaviour
+namespace HandSystem
 {
+    public class HandModel : IModel
+    {
+        private IWeapon _weapon = null;
+        public IWeapon Weapon => _weapon;
+    }
 }
+

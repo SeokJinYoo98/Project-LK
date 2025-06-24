@@ -1,6 +1,7 @@
-using UnityEngine;
-using HandSystem;
 using Common.Interface.MVPC;
+using HandSystem;
+using System;
+using UnityEngine;
 
 namespace Player.States
 {
@@ -68,24 +69,52 @@ namespace Player.States
             Debug.Log( "Walk Exit" );
         }
     }
-    public class PlayerAttackState : State<PlayerPresenter>
+    public class PlayerAttackState : State<PlayerPresenter>, IAttackableState
     {
-        float               _attackTime = 1.0f;
-
+        float _attackTime   = 1.0f;
+        HandType _handType  = HandType.None;
         public PlayerAttackState(PlayerPresenter owner) : base( owner ) { }
         public override void Enter()
         {
-
+            _owner.SetAnimBool( "IsAttack", true );
         }
         public override void Execute(float deltaTime)
         {
             _attackTime -= deltaTime;
             if (_attackTime <= 0.0f)
             {
-               _owner.ChangeMainState( PlayerStateType.Idle );
-               _owner.ChangeHandState( HandType.Both, HandStateType.Idle );
+                TryEndAttack( );
             }
               
+        }
+        public override void Exit()
+        {
+            _owner.SetAnimBool( "IsAttack", false );
+        }
+        public void OnAttackInput(HandType type)
+        {
+            var other = type == HandType.Left ? HandType.Right : HandType.Left;
+
+            // [어택 미구현 임시 Idle 수행]
+            _owner.ChangeHandState( type, HandStateType.Wait );
+            _owner.ChangeHandState( other, HandStateType.Wait );
+            //_owner.ChangeHandState( type,  HandStateType.Attack );
+            //_owner.ChangeHandState( other, HandStateType.Wait );
+
+            _handType = type;
+        }
+        private void TryEndAttack()
+        {
+            if (_owner.Velocity.sqrMagnitude < 0.01f)
+            {
+                _owner.ChangeMainState( PlayerStateType.Idle );
+                _owner.ChangeHandState( HandType.Both, HandStateType.Idle );
+            }
+            else
+            {
+                _owner.ChangeMainState( PlayerStateType.Walk );
+                _owner.ChangeHandState( HandType.Both, HandStateType.Walk );
+            }
         }
     }
 

@@ -15,8 +15,8 @@ namespace HandSystem
 
         private void Awake()
         {
-            _handMap[_leftHand.Type]  = _leftHand;
-            _handMap[_rightHand.Type] = _rightHand;
+            _handMap[HandType.Left]  = _leftHand;
+            _handMap[HandType.Right] = _rightHand;
 
         }
         private void Start()
@@ -38,18 +38,15 @@ namespace HandSystem
         public void ChangeHandState(HandType type, HandStateType stateType)
         {
             if (type == HandType.Both)
-            {
                 foreach (var hand in _handMap.Values)
                     hand.ChangeMainState( stateType );
-            }
-            else if (_handMap.TryGetValue( type, out var hand ))
-            {
-                hand.ChangeMainState( stateType );
-            }
-            else
-            {
-                Debug.LogWarning( $"HandManager: Unknown hand type: {type}" );
-            }
+
+            else if (type == HandType.Left || type == HandType.Right)
+                _handMap[type].ChangeMainState( stateType );
+
+            else { }
+                
+            
         }
     }
 }

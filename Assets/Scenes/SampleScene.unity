@@ -447,7 +447,6 @@ GameObject:
   - component: {fileID: 579563566}
   - component: {fileID: 579563567}
   - component: {fileID: 579563568}
-  - component: {fileID: 579563570}
   - component: {fileID: 579563569}
   - component: {fileID: 579563571}
   m_Layer: 0
@@ -539,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23cadb30de12a1428f40250442509e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handType: 1
+  _handType: 2
 --- !u!114 &579563569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,18 +552,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animOffset: {x: 0, y: 0, z: 0}
---- !u!114 &579563570
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 579563565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db99563eeee01942aa64116aaa2fb92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &579563571
 Animator:
   serializedVersion: 7
@@ -744,7 +731,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1004919055}
-  - component: {fileID: 1004919054}
   - component: {fileID: 1004919053}
   - component: {fileID: 1004919052}
   - component: {fileID: 1004919059}
@@ -837,18 +823,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 173d6e011d9cdc344ad569409e5760aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1004919054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004919050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84af0ce53c3eeba4192bbcd7b39b0b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1004919055
@@ -995,9 +969,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1187916762}
   - component: {fileID: 1187916763}
-  - component: {fileID: 1187916761}
-  - component: {fileID: 1187916765}
   - component: {fileID: 1187916764}
+  - component: {fileID: 1187916761}
   - component: {fileID: 1187916766}
   m_Layer: 0
   m_Name: PlayerHand_L
@@ -1088,7 +1061,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23cadb30de12a1428f40250442509e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handType: 0
+  _handType: 1
 --- !u!114 &1187916764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,18 +1075,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animOffset: {x: 0, y: 0, z: 0}
---- !u!114 &1187916765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187916760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db99563eeee01942aa64116aaa2fb92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &1187916766
 Animator:
   serializedVersion: 7
@@ -1124,7 +1085,7 @@ Animator:
   m_GameObject: {fileID: 1187916760}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c74f42e4aac49a84592e491523859672, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2c7de63e7b0af5640a40bfcb26fa4e91, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

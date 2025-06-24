@@ -8,7 +8,6 @@ using UnityEngine.XR;
 
 namespace Player {
     [RequireComponent( typeof( PlayerInputHandler ) )]
-    [RequireComponent( typeof( PlayerModel ) )]
     [RequireComponent( typeof( PlayerView ) )]
     [RequireComponent( typeof( HandManager ) )]
     public class PlayerPresenter : MonoBehaviour, IPresenter
@@ -30,10 +29,10 @@ namespace Player {
         {
             _input       = GetComponent<PlayerInputHandler>( );
             _view        = GetComponent<PlayerView>( );
-            _model       = GetComponent<PlayerModel>( );
             _handManager = GetComponent<HandManager>( );
             
             _camera = Camera.main;
+            _model  = new PlayerModel( );
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -86,16 +85,22 @@ namespace Player {
         private void LeftClicked()
         {
             Debug.Log( "Left Clicked" );
-            ChangeMainState( PlayerStateType.Attack);
-            ChangeHandState( HandType.Left, HandStateType.Attack );
+            Attack( HandType.Left );
         }
         private void RightClicked()
         {
             Debug.Log( "Right Clicked" );
-            ChangeMainState( PlayerStateType.Attack );
-            ChangeHandState( HandType.Right, HandStateType.Attack );
+            Attack(HandType.Right );
         }
+        private void Attack(HandType type)
+        {
+            ChangeMainState(PlayerStateType.Attack);
 
+            if (_fsm.MainState is IAttackableState attackState)
+                attackState.OnAttackInput( type );
+        }
+        public void SetAnimBool(string name,  bool value)
+            => _view.SetAnimBool( name, value );
         State<PlayerPresenter> CreateState(PlayerStateType type)
             => type switch
             {
