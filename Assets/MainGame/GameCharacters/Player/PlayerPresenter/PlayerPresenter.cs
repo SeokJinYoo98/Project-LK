@@ -70,6 +70,8 @@ namespace Player {
 
         public void RequestFlip( bool flip )
         {
+            // [TODO] 플립 방식을 통일하자.
+            // 플레이어에서 플립을 수행하면 핸드에서 스케일 값을 곱하지 않게
             _view.SetFlipX( flip );
             _handManager.SetFlipX( flip );
         }

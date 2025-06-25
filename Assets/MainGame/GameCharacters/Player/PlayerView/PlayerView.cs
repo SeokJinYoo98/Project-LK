@@ -1,4 +1,4 @@
-using Common.Interface.MVPC;
+﻿using Common.Interface.MVPC;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -42,7 +42,12 @@ namespace Player
         }
         public void SetFlipX(bool flipX)
         {
-            _sr.flipX = flipX;
+            Vector3 newScale = Vector3.one;
+
+            if (flipX)
+                newScale.x = -1f;
+
+            transform.localScale = newScale;
         }
         public void SetAnimBool(string name,  bool value)
             => _animator.SetBool( name, value );

@@ -77,6 +77,7 @@ namespace Player.States
         public override void Enter()
         {
             _owner.SetAnimBool( "IsAttack", true );
+            _owner.ChangeHandState( HandType.Both, HandStateType.Wait );
         }
         public override void Execute(float deltaTime)
         {
@@ -98,12 +99,6 @@ namespace Player.States
 
             // [어택 미구현 임시 Idle 수행]
             _owner.ChangeHandState( type,  HandStateType.Attack );
-            _owner.ChangeHandState( other, HandStateType.Wait );
-            //_owner.ChangeHandState(HandType.Both, HandStateType.Wait );
-
-            //_owner.ChangeHandState( type,  HandStateType.Attack );
-            //_owner.ChangeHandState( other, HandStateType.Wait );
-
             _handType = type;
         }
         private void TryEndAttack()

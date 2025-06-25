@@ -1,4 +1,4 @@
-
+ï»¿
 using UnityEngine;
 using Common.Interface.MVPC;
 using System.Collections.Generic;
@@ -42,8 +42,8 @@ public class StateMachine<T> where T : IPresenter
 
         if (_subStates.TryGetValue( state.Name, out var target ))
         {
-            target.Exit( );  // Á¾·á Ã³¸® ¸ÕÀú
-            _subStates.Remove( state.Name );  // µñ¼Å³Ê¸®¿¡¼­ Á¦°Å
+            target.Exit( );  // ì¢…ë£Œ ì²˜ë¦¬ ë¨¼ì €
+            _subStates.Remove( state.Name );  // ë”•ì…”ë„ˆë¦¬ì—ì„œ ì œê±°
         }
 
     }

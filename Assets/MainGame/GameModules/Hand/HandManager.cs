@@ -29,7 +29,7 @@ namespace HandSystem
             _defaultLeft = _leftRoot.localPosition;
             _defaultRight = _rightRoot.localPosition;
 
-            _swapLeft = new Vector3( -_defaultRight.x, _defaultRight.y, _defaultRight.z );
+            _swapLeft  = new Vector3( -_defaultRight.x, _defaultRight.y, _defaultRight.z );
             _swapRight = new Vector3( -_defaultLeft.x, _defaultLeft.y, _defaultLeft.z );
         }
 
@@ -37,12 +37,6 @@ namespace HandSystem
         {
             if (_isFlipped == flip) return;
             _isFlipped = flip;
-
-            var (newScale, leftPos, rightPos) = GetFlipSettings( );
-
-            _leftRoot.localScale     = _rightRoot.localScale = newScale;
-            _leftRoot.localPosition  = leftPos;
-            _rightRoot.localPosition = rightPos;
         }
 
         public void LookAt(Vector2 targetPos)
@@ -70,14 +64,6 @@ namespace HandSystem
                 _handMap[type].ChangeMainState( stateType );
 
             else { }
-        }
-
-        private (Vector3 scale, Vector3 leftPos, Vector3 rightPos) GetFlipSettings()
-        {
-            if (_isFlipped)
-                return (new Vector3( -1f, 1f, 1f ), _swapLeft, _swapRight);
-            
-            return (Vector3.one, _defaultLeft, _defaultRight);
         }
     }
 }
