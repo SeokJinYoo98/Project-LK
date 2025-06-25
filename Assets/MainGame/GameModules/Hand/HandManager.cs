@@ -23,7 +23,7 @@ namespace HandSystem
         bool _isFlipped = false;
         private void Awake()
         {
-            _handMap[HandType.Left]  = _leftHand;
+            _handMap[HandType.Left] = _leftHand;
             _handMap[HandType.Right] = _rightHand;
 
             _defaultLeft = _leftRoot.localPosition;
@@ -36,22 +36,15 @@ namespace HandSystem
         public void SetFlipX(bool flip)
         {
             if (_isFlipped == flip) return;
-            foreach(var hand in  _handMap.Values)
-                hand.SetFlipX(flip);
-
-            if (flip)
-            {
-                _leftRoot.localPosition = _swapLeft;
-                _rightRoot.localPosition = _swapRight;
-            }
-            else
-            {
-                _leftRoot.localPosition = _defaultLeft;
-                _rightRoot.localPosition = _defaultRight;
-            }
-
             _isFlipped = flip;
+
+            var (newScale, leftPos, rightPos) = GetFlipSettings( );
+
+            _leftRoot.localScale     = _rightRoot.localScale = newScale;
+            _leftRoot.localPosition  = leftPos;
+            _rightRoot.localPosition = rightPos;
         }
+
         public void LookAt(Vector2 targetPos)
         {
             RotateRootTowards( _leftRoot, targetPos );
@@ -77,8 +70,14 @@ namespace HandSystem
                 _handMap[type].ChangeMainState( stateType );
 
             else { }
-                
+        }
+
+        private (Vector3 scale, Vector3 leftPos, Vector3 rightPos) GetFlipSettings()
+        {
+            if (_isFlipped)
+                return (new Vector3( -1f, 1f, 1f ), _swapLeft, _swapRight);
             
+            return (Vector3.one, _defaultLeft, _defaultRight);
         }
     }
 }
