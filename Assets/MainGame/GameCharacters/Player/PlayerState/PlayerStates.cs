@@ -89,6 +89,7 @@ namespace Player.States
         }
         public override void Exit()
         {
+            _owner.EndAttack( );
             _owner.SetAnimBool( "IsAttack", false );
         }
         public void OnAttackInput(HandType type)
@@ -96,7 +97,9 @@ namespace Player.States
             var other = type == HandType.Left ? HandType.Right : HandType.Left;
 
             // [어택 미구현 임시 Idle 수행]
-            _owner.ChangeHandState(HandType.Both, HandStateType.Wait );
+            _owner.ChangeHandState( type,  HandStateType.Attack );
+            _owner.ChangeHandState( other, HandStateType.Wait );
+            //_owner.ChangeHandState(HandType.Both, HandStateType.Wait );
 
             //_owner.ChangeHandState( type,  HandStateType.Attack );
             //_owner.ChangeHandState( other, HandStateType.Wait );

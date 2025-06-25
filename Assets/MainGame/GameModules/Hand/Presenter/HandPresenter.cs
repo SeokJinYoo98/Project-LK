@@ -1,4 +1,4 @@
-using Common.Interface.Equipment;
+﻿using Common.Interface.Equipment;
 using Common.Interface.MVPC;
 using System;
 using UnityEngine;
@@ -37,8 +37,7 @@ namespace HandSystem
             => _handView.LookAt( targetPos - (Vector2)transform.position );
         public void SetAnim(string name, HandStateType type)
             => _handView.SetAnim( name, type );
-        public void SetSwapPos(Vector3 pos) 
-            => _handView.SetSwapPos( pos );
+
         public void ChangeMainState(HandStateType type)
             => _fsm.ChangeMainState(CreateState(type));
 
@@ -51,10 +50,10 @@ namespace HandSystem
         private State<HandPresenter> CreateState(HandStateType type)
           => type switch
           {
-              HandStateType.Idle => new HandIdleState( this ),
-              HandStateType.Walk => new HandWalkState( this ),
+              HandStateType.Idle   => new HandIdleState( this ),
+              HandStateType.Walk   => new HandWalkState( this ),
               HandStateType.Attack => new HandAttackState( this ),
-              HandStateType.Wait => new HandWaitState( this ),
+              HandStateType.Wait   => new HandWaitState( this ),
               _ => throw new ArgumentOutOfRangeException( nameof( type ), type, null )
           };
     }

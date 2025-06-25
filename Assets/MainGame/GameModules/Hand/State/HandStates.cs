@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace HandSystem
 {
-    public enum HandStateType { Idle, Walk, Attack, Wait };
+    public enum HandStateType { Idle, Walk, Wait, Attack };
     public class HandWaitState : State<HandPresenter>
     {
         public HandWaitState(HandPresenter owner) : base( owner ) { }
@@ -52,8 +52,8 @@ namespace HandSystem
         public HandAttackState(HandPresenter owner) : base( owner ) { }
         public override void Enter()
         {
+            Debug.Log( "HandAttack Enter" );
             _owner.SetAnim( "HandState", HandStateType.Attack );
-
         }
 
         public override void Execute(float deltaTime)

@@ -1,4 +1,4 @@
-using Common.Interface.Handler;
+﻿using Common.Interface.Handler;
 using Common.Interface.MVPC;
 using HandSystem;
 using Player.States;
@@ -23,7 +23,7 @@ namespace Player {
         public Vector2  PlayerPos { get; private set; }
         public Vector2  Velocity { get; private set; }
         public bool     ShouldFlip { get; private set; }
-        public bool     CanMove { get; private set; }
+        public bool     CanMove { get; private set; } = true;
 
         void Awake()
         {
@@ -81,7 +81,6 @@ namespace Player {
             => _handManager.ChangeHandState( type, stateType );
         public void SetVelocity(Vector2 velocity)
             => _view.SetVelocity( velocity );
-
         private void LeftClicked()
         {
             Debug.Log( "Left Clicked" );
@@ -97,8 +96,13 @@ namespace Player {
             ChangeMainState(PlayerStateType.Attack);
 
             if (_fsm.MainState is IAttackableState attackState)
+            {
                 attackState.OnAttackInput( type );
+                CanMove = false;
+            }
+                
         }
+        public void EndAttack() => CanMove = true;
         public void SetAnimBool(string name,  bool value)
             => _view.SetAnimBool( name, value );
         State<PlayerPresenter> CreateState(PlayerStateType type)

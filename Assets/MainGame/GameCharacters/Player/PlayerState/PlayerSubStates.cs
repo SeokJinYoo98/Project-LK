@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player.States
 {
@@ -27,8 +27,12 @@ namespace Player.States
         {
             if (_owner.ShouldFlip == _currFlip) return;
 
-            _currFlip = _owner.ShouldFlip;
-            _owner.RequestFlip( _currFlip );
+            if (_owner.CanMove)
+            {
+                _currFlip = _owner.ShouldFlip;
+                _owner.RequestFlip( _currFlip );
+            }
+
         }
     }
     public class AimSubState : State<PlayerPresenter>
@@ -40,7 +44,8 @@ namespace Player.States
 
         public override void Execute(float deltaTime)
         {
-            _owner.RequestLookAt( _owner.MouseWorldPos );
+            if (_owner.CanMove)
+                _owner.RequestLookAt( _owner.MouseWorldPos );
         }
 
         public override void Exit()

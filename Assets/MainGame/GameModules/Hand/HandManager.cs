@@ -1,8 +1,9 @@
+﻿using Common.Interface.ppp;
+using Player;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Player;
-using Common.Interface.ppp;
+using static UnityEngine.GraphicsBuffer;
 
 namespace HandSystem
 {
@@ -10,29 +11,60 @@ namespace HandSystem
     {
         [SerializeField] private HandPresenter _leftHand;
         [SerializeField] private HandPresenter _rightHand;
-
         private readonly Dictionary<HandType, HandPresenter> _handMap = new( );
 
+        [SerializeField] private Transform _leftRoot;
+        [SerializeField] private Transform _rightRoot;
+        Vector3 _defaultLeft;
+        Vector3 _defaultRight;
+        Vector3 _swapLeft;
+        Vector3 _swapRight;
+
+        bool _isFlipped = false;
         private void Awake()
         {
             _handMap[HandType.Left]  = _leftHand;
             _handMap[HandType.Right] = _rightHand;
 
+            _defaultLeft = _leftRoot.localPosition;
+            _defaultRight = _rightRoot.localPosition;
+
+            _swapLeft = new Vector3( -_defaultRight.x, _defaultRight.y, _defaultRight.z );
+            _swapRight = new Vector3( -_defaultLeft.x, _defaultLeft.y, _defaultLeft.z );
         }
-        private void Start()
-        {
-            _leftHand.SetSwapPos( _rightHand.transform.position );
-            _rightHand.SetSwapPos( _leftHand.transform.position );
-        }
+
         public void SetFlipX(bool flip)
         {
-            foreach (var hand in _handMap.Values)
-                hand.SetFlipX( flip );
+            if (_isFlipped == flip) return;
+            foreach(var hand in  _handMap.Values)
+                hand.SetFlipX(flip);
+
+            if (flip)
+            {
+                _leftRoot.localPosition = _swapLeft;
+                _rightRoot.localPosition = _swapRight;
+            }
+            else
+            {
+                _leftRoot.localPosition = _defaultLeft;
+                _rightRoot.localPosition = _defaultRight;
+            }
+
+            _isFlipped = flip;
         }
         public void LookAt(Vector2 targetPos)
         {
-            foreach (var hand in _handMap.Values)
-                hand.LookAt( targetPos );
+            RotateRootTowards( _leftRoot, targetPos );
+            RotateRootTowards( _rightRoot, targetPos );
+        }
+
+        void RotateRootTowards(Transform root, Vector2 target)
+        {
+            Vector2 dir = target - (Vector2)root.position;
+            if (dir.sqrMagnitude < 0.0001f) return;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            if (_isFlipped) angle += 180f;
+            root.rotation = Quaternion.Euler( 0f, 0f, angle );
         }
 
         public void ChangeHandState(HandType type, HandStateType stateType)
